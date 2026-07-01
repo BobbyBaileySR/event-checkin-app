@@ -8,9 +8,9 @@
     <script src="https://unpkg.com/html5-qrcode"></script>
     <style>
         :root {
-            --bg-deep: #0d1321;
-            --brand-blue: #1e293b;
-            --brand-teal: #0ea5e9;
+            --bg-deep: #0f172a;          /* Deep Slate/Charcoal Background */
+            --brand-blue: #1e293b;       /* Secondary Slate */
+            --brand-orange: #f97316;     /* Classic Adaptavist Orange Accent */
             --brand-text: #f8fafc;
             --card-bg: #ffffff;
             --input-border: #cbd5e1;
@@ -26,8 +26,13 @@
         .btn { display: inline-flex; align-items: center; justify-content: center; width: 100%; padding: 14px; font-size: 1rem; font-weight: 600; border-radius: 8px; border: none; cursor: pointer; transition: all 0.2s ease; margin-top: 10px; }
         .btn-primary { background: var(--bg-deep); color: white; }
         .btn-primary:hover { background: #1e2640; }
-        .btn-accent { background: var(--brand-teal); color: white; }
-        .btn-accent:hover { background: #0284c7; }
+.btn-accent { 
+    background: var(--brand-orange); 
+    color: white; 
+}
+.btn-accent:hover { 
+    background: #ea580c; /* Darker orange hover effect */
+}
         #scanner-section, #review-section { display: none; }
         #reader { width: 100%; border: none; border-radius: 8px; overflow: hidden; }
         .form-group { margin-bottom: 16px; text-align: left; }
