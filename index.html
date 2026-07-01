@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Check-in</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; background: #f4f4f9; }
+        .container { max-width: 500px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        #scanner-section { display: none; margin-top: 20px; }
+        #reader { width: 100%; border: none; }
+        .status-box { margin-top: 15px; padding: 15px; font-weight: bold; border-radius: 5px; }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+        .test-button { margin-top: 20px; padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Event Staff Portal</h1>
+        
+        <div id="login-section">
+            <p>Please log in with your corporate Google account.</p>
+            <div id="g_id_onload"
+                 data-client_id="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
+                 data-context="signin"
+                 data-ux_mode="popup"
+                 data-callback="handleGoogleLogin"
+                 data-auto_prompt="false">
+            </div>
+            <div class="g_id_signin" data-type="standard"></div>
+        </div>
+
+        <div id="scanner-section">
+            <div id="reader"></div>
+            <div id="status-message" class="status-box">Ready to scan...</div>
+            
+            <button class="test-button" onclick="simulateScan()">[Test Mode] Simulate Valid Scan</button>
+        </div>
+    </div>
+
+    <script>
+        // CONFIGURATION
+        const SCRIPTRUNNER_URL = "https://your-workspace.scriptrunnerconnect.com/generic/events/scanner";
+        
+        let googleToken = "";
+        let isProcessing = false;
+
+        // -----------------------------------------------------
+        // FUNCTION 1: Handle Google Login Success
+        // -----------------------------------------------------
+        function handleGoogleLogin(response) {
+            googleToken = response.credential; // Save the token for API calls
+            
+            // Hide login, show scanner
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('scanner-section').style.display = 'block';
+            
+            startCamera();
+        }
+
+        // -----------------------------------------------------
+        // FUNCTION 2: Turn on the Camera
+        // -----------------------------------------------------
+        function startCamera() {
+            const html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: {width: 250, height: 250} });
+            html5QrcodeScanner.render(onCameraReadsCode, function(error) { /* Ignore minor frame errors */ });
+        }
+
+        // -----------------------------------------------------
+        // FUNCTION 3: Handle the Scanned QR Code
+        // -----------------------------------------------------
+        function onCameraReadsCode(decodedText) {
+            if (isProcessing) return; // Don't scan twice by accident
+            isProcessing = true;
+            
+            updateStatus("Verifying ticket...", "");
+            sendDataToBackend(decodedText);
+        }
+
+        // -----------------------------------------------------
+        // FUNCTION 4: Talk to ScriptRunner Connect
+        // -----------------------------------------------------
+        async function sendDataToBackend(qrCodeJwt) {
+            try {
+                const response = await fetch(SCRIPTRUNNER_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + googleToken // Prove who the staff is
+                    },
+                    body: JSON.stringify({ ticketToken: qrCodeJwt }) // Prove what the ticket is
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    updateStatus("✅ Checked In: " + data.contactName, "success");
+                } else {
+                    updateStatus("❌ Error: " + data.error, "error");
+                }
+            } catch (error) {
+                updateStatus("❌ Network Error: Could not reach server", "error");
+            }
+
+            // Reset scanner after 3 seconds
+            setTimeout(() => {
+                isProcessing = false;
+                updateStatus("Ready to scan...", "");
+            }, 3000);
+        }
+
+        // -----------------------------------------------------
+        // UTILITIES
+        // -----------------------------------------------------
+        function updateStatus(message, className) {
+            const statusDiv = document.getElementById('status-message');
+            statusDiv.innerText = message;
+            statusDiv.className = 'status-box ' + className;
+        }
+
+        // Used for testing without a real camera/QR code
+        function simulateScan() {
+            // Ask the user to paste a test JWT
+            const testJwt = prompt("Paste your Test JWT here:");
+            if(testJwt) {
+                onCameraReadsCode(testJwt);
+            }
+        }
+    </script>
+</body>
+</html>
