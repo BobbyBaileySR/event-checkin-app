@@ -44,7 +44,7 @@
 
     <script>
         // CONFIGURATION
-        const SCRIPTRUNNER_URL = "https://event.scriptrunnerconnect.com/dloqwh8df6zz2cnuew7pyw";
+        const SCRIPTRUNNER_URL = "https://event.scriptrunnerconnect.com/htdmrgfevkndryj2hcs765";
         
         let googleToken = "";
         let isProcessing = false;
@@ -81,22 +81,28 @@
             sendDataToBackend(decodedText);
         }
 
-        // -----------------------------------------------------
-        // FUNCTION 4: Talk to ScriptRunner Connect
+       // -----------------------------------------------------
+        // FUNCTION 4: Talk to ScriptRunner Connect (CORS Bypass Mode)
         // -----------------------------------------------------
         async function sendDataToBackend(qrCodeJwt) {
             try {
+                // We package both tokens into a single text payload
+                const payload = {
+                    googleToken: googleToken,
+                    ticketToken: qrCodeJwt
+                };
+        
                 const response = await fetch(SCRIPTRUNNER_URL, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + googleToken // Prove who the staff is
+                        // Changing this to text/plain forces the browser to skip the OPTIONS check!
+                        'Content-Type': 'text/plain' 
                     },
-                    body: JSON.stringify({ ticketToken: qrCodeJwt }) // Prove what the ticket is
+                    body: JSON.stringify(payload)
                 });
-
+        
                 const data = await response.json();
-
+        
                 if (response.ok) {
                     updateStatus("✅ Checked In: " + data.contactName, "success");
                 } else {
@@ -105,14 +111,12 @@
             } catch (error) {
                 updateStatus("❌ Network Error: Could not reach server", "error");
             }
-
-            // Reset scanner after 3 seconds
+        
             setTimeout(() => {
                 isProcessing = false;
                 updateStatus("Ready to scan...", "");
             }, 3000);
         }
-
         // -----------------------------------------------------
         // UTILITIES
         // -----------------------------------------------------
