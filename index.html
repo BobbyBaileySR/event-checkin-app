@@ -7,41 +7,145 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="https://unpkg.com/html5-qrcode"></script>
     <style>
-        :root {
-            --bg-deep: #0f172a;          /* Deep Slate/Charcoal Background */
-            --brand-blue: #1e293b;       /* Secondary Slate */
-            --brand-orange: #f97316;     /* Classic Adaptavist Orange Accent */
-            --brand-text: #f8fafc;
-            --card-bg: #ffffff;
-            --input-border: #cbd5e1;
-            --text-main: #334155;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f1f5f9; color: var(--text-main); line-height: 1.5; padding: 10px; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-        .app-card { width: 100%; max-width: 550px; background: var(--card-bg); border-radius: 12px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
-        .header { background: var(--bg-deep); color: var(--brand-text); padding: 24px 20px; text-align: center; border-bottom: 4px solid var(--brand-teal); }
-        .header h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.025em; }
-        .header p { color: #94a3b8; font-size: 0.875rem; margin-top: 4px; }
-        .content { padding: 24px; }
-        .btn { display: inline-flex; align-items: center; justify-content: center; width: 100%; padding: 14px; font-size: 1rem; font-weight: 600; border-radius: 8px; border: none; cursor: pointer; transition: all 0.2s ease; margin-top: 10px; }
-        .btn-primary { background: var(--bg-deep); color: white; }
-        .btn-primary:hover { background: #1e2640; }
-.btn-accent { 
+       Got it, let's make that Adaptavist Orange absolute king of the UI.
+
+We will invert the color hierarchy so the deep slate is used subtly for backgrounds, while that unmistakable signature orange dominates the primary headers, buttons, and focal elements.
+
+Open your index.html file on GitHub, find the <style> section, and completely replace it with this bright, brand-accurate stylesheet:
+
+CSS
+:root {
+    --brand-orange: #f97316;     /* Primary Adaptavist Orange */
+    --brand-orange-hover: #ea580c;
+    --bg-slate: #0f172a;         /* Deep Slate Gray */
+    --card-bg: #ffffff;
+    --input-border: #cbd5e1;
+    --text-main: #1e293b;
+    --brand-text: #ffffff;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+    background-color: var(--bg-slate); /* Dark mode background pops the orange card */
+    color: var(--text-main); 
+    line-height: 1.5; 
+    padding: 10px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    min-height: 100vh; 
+}
+.app-card { 
+    width: 100%; 
+    max-width: 550px; 
+    background: var(--card-bg); 
+    border-radius: 12px; 
+    overflow: hidden; 
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3); 
+    border: 1px solid rgba(255,255,255,0.1); 
+}
+.header { 
+    background: var(--brand-orange); /* Orange is now the main header color */
+    color: var(--brand-text); 
+    padding: 28px 20px; 
+    text-align: center; 
+}
+.header h1 { 
+    font-size: 1.6rem; 
+    font-weight: 800; 
+    letter-spacing: -0.025em; 
+}
+.header p { 
+    color: rgba(255, 255, 255, 0.8); 
+    font-size: 0.9rem; 
+    margin-top: 4px; 
+    font-weight: 500;
+}
+.content { padding: 24px; }
+.btn { 
+    display: inline-flex; 
+    align-items: center; 
+    justify-content: center; 
+    width: 100%; 
+    padding: 14px; 
+    font-size: 1rem; 
+    font-weight: 700; 
+    border-radius: 8px; 
+    border: none; 
+    cursor: pointer; 
+    transition: all 0.2s ease; 
+    margin-top: 10px; 
+}
+.btn-primary { 
     background: var(--brand-orange); 
     color: white; 
 }
-.btn-accent:hover { 
-    background: #ea580c; /* Darker orange hover effect */
+.btn-primary:hover { 
+    background: var(--brand-orange-hover); 
 }
-        #scanner-section, #review-section { display: none; }
-        #reader { width: 100%; border: none; border-radius: 8px; overflow: hidden; }
-        .form-group { margin-bottom: 16px; text-align: left; }
-        label { display: block; font-size: 0.875rem; font-weight: 600; color: #475569; margin-bottom: 6px; }
-        input[type="text"] { width: 100%; padding: 12px; border: 1px solid var(--input-border); border-radius: 6px; font-size: 1rem; color: var(--text-main); background-color: #f8fafc; transition: border 0.2s; }
-        input[type="text"]:focus { outline: none; border-color: var(--brand-teal); background-color: #fff; }
-        .status-box { margin-top: 16px; padding: 12px; font-weight: 600; border-radius: 6px; text-align: center; font-size: 0.95rem; display: none; }
-        .success { display: block; background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
-        .error { display: block; background: #fef2f2; color: #991b1b; border: 1px solid #fca5a5; }
+.btn-accent { 
+    background: var(--brand-orange); 
+    color: white; 
+    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.2);
+}
+.btn-accent:hover { 
+    background: var(--brand-orange-hover); 
+    box-shadow: 0 6px 16px rgba(249, 115, 22, 0.3);
+}
+#scanner-section, #review-section { display: none; }
+#reader { 
+    width: 100%; 
+    border: 2px solid #e2e8f0; 
+    border-radius: 8px; 
+    overflow: hidden; 
+}
+.form-group { margin-bottom: 16px; text-align: left; }
+label { 
+    display: block; 
+    font-size: 0.875rem; 
+    font-weight: 700; 
+    color: #475569; 
+    margin-bottom: 6px; 
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+input[type="text"] { 
+    width: 100%; 
+    padding: 12px; 
+    border: 1px solid var(--input-border); 
+    border-radius: 6px; 
+    font-size: 1rem; 
+    color: var(--text-main); 
+    background-color: #f8fafc; 
+    transition: all 0.2s; 
+}
+input[type="text"]:focus { 
+    outline: none; 
+    border-color: var(--brand-orange); 
+    background-color: #fff; 
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+}
+.status-box { 
+    margin-top: 16px; 
+    padding: 14px; 
+    font-weight: 700; 
+    border-radius: 6px; 
+    text-align: center; 
+    font-size: 0.95rem; 
+    display: none; 
+}
+.success { 
+    display: block; 
+    background: #f0fdf4; 
+    color: #166534; 
+    border: 1px solid #bbf7d0; 
+}
+.error { 
+    display: block; 
+    background: #fef2f2; 
+    color: #991b1b; 
+    border: 1px solid #fca5a5; 
+}
     </style>
 </head>
 <body>
