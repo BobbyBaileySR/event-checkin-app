@@ -1,138 +1,203 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event Check-in</title>
+    <title>The Adaptavist Group | Event Portal</title>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="https://unpkg.com/html5-qrcode"></script>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; background: #f4f4f9; }
-        .container { max-width: 500px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        #scanner-section { display: none; margin-top: 20px; }
-        #reader { width: 100%; border: none; }
-        .status-box { margin-top: 15px; padding: 15px; font-weight: bold; border-radius: 5px; }
-        .success { background-color: #d4edda; color: #155724; }
-        .error { background-color: #f8d7da; color: #721c24; }
-        .test-button { margin-top: 20px; padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        :root {
+            --bg-deep: #0d1321;
+            --brand-blue: #1e293b;
+            --brand-teal: #0ea5e9;
+            --brand-text: #f8fafc;
+            --card-bg: #ffffff;
+            --input-border: #cbd5e1;
+            --text-main: #334155;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f1f5f9; color: var(--text-main); line-height: 1.5; padding: 10px; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+        .app-card { width: 100%; max-width: 550px; background: var(--card-bg); border-radius: 12px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
+        .header { background: var(--bg-deep); color: var(--brand-text); padding: 24px 20px; text-align: center; border-bottom: 4px solid var(--brand-teal); }
+        .header h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.025em; }
+        .header p { color: #94a3b8; font-size: 0.875rem; margin-top: 4px; }
+        .content { padding: 24px; }
+        .btn { display: inline-flex; align-items: center; justify-content: center; width: 100%; padding: 14px; font-size: 1rem; font-weight: 600; border-radius: 8px; border: none; cursor: pointer; transition: all 0.2s ease; margin-top: 10px; }
+        .btn-primary { background: var(--bg-deep); color: white; }
+        .btn-primary:hover { background: #1e2640; }
+        .btn-accent { background: var(--brand-teal); color: white; }
+        .btn-accent:hover { background: #0284c7; }
+        #scanner-section, #review-section { display: none; }
+        #reader { width: 100%; border: none; border-radius: 8px; overflow: hidden; }
+        .form-group { margin-bottom: 16px; text-align: left; }
+        label { display: block; font-size: 0.875rem; font-weight: 600; color: #475569; margin-bottom: 6px; }
+        input[type="text"] { width: 100%; padding: 12px; border: 1px solid var(--input-border); border-radius: 6px; font-size: 1rem; color: var(--text-main); background-color: #f8fafc; transition: border 0.2s; }
+        input[type="text"]:focus { outline: none; border-color: var(--brand-teal); background-color: #fff; }
+        .status-box { margin-top: 16px; padding: 12px; font-weight: 600; border-radius: 6px; text-align: center; font-size: 0.95rem; display: none; }
+        .success { display: block; background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+        .error { display: block; background: #fef2f2; color: #991b1b; border: 1px solid #fca5a5; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>Event Staff Portal</h1>
-        
-        <div id="login-section">
-            <p>Please log in with your corporate Google account.</p>
-            <div id="g_id_onload"
-                 data-client_id="391161511150-ejvh658fsqb4cato9a58iq1ad4l3olsh.apps.googleusercontent.com"
-                 data-context="signin"
-                 data-ux_mode="popup"
-                 data-callback="handleGoogleLogin"
-                 data-auto_prompt="false">
-            </div>
-            <div class="g_id_signin" data-type="standard"></div>
+    <div class="app-card">
+        <div class="header">
+            <h1>The Adaptavist Group</h1>
+            <p>Secure Event Access Management</p>
         </div>
 
-        <div id="scanner-section">
-            <div id="reader"></div>
-            <div id="status-message" class="status-box">Ready to scan...</div>
-            
-            <button class="test-button" onclick="simulateScan()">[Test Mode] Simulate Valid Scan</button>
+        <div class="content">
+            <div id="login-section">
+                <div style="margin-bottom: 20px; text-align: center;">
+                    <div id="g_id_onload"
+                         data-client_id="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
+                         data-context="signin"
+                         data-ux_mode="popup"
+                         data-callback="handleGoogleLogin"
+                         data-auto_prompt="false">
+                    </div>
+                    <div class="g_id_signin" data-type="standard" data-size="large"></div>
+                </div>
+            </div>
+
+            <div id="scanner-section">
+                <div id="reader"></div>
+                <button class="btn btn-primary" onclick="simulateScan()" style="margin-top:20px; font-size:0.85rem; padding:8px;">[Test Mode] Simulate Valid Scan</button>
+            </div>
+
+            <div id="review-section">
+                <div class="form-group">
+                    <label>First Name</label>
+                    <input type="text" id="field-firstname" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Second Name</label>
+                    <input type="text" id="field-lastname" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Company</label>
+                    <input type="text" id="field-company" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Account Manager</label>
+                    <input type="text" id="field-am" readonly>
+                </div>
+                <button class="btn btn-accent" id="confirm-btn" onclick="commitAttendance()">Confirm Attendance</button>
+            </div>
+
+            <div id="status-message" class="status-box"></div>
         </div>
     </div>
 
     <script>
-        // CONFIGURATION
         const SCRIPTRUNNER_URL = "https://event.scriptrunnerconnect.com/htdmrgfevkndryj2hcs765";
         
         let googleToken = "";
+        let currentTicketToken = "";
         let isProcessing = false;
+        let html5QrcodeScanner = null;
 
-        // -----------------------------------------------------
-        // FUNCTION 1: Handle Google Login Success
-        // -----------------------------------------------------
         function handleGoogleLogin(response) {
-            googleToken = response.credential; // Save the token for API calls
-            
-            // Hide login, show scanner
+            googleToken = response.credential;
             document.getElementById('login-section').style.display = 'none';
             document.getElementById('scanner-section').style.display = 'block';
-            
             startCamera();
         }
 
-        // -----------------------------------------------------
-        // FUNCTION 2: Turn on the Camera
-        // -----------------------------------------------------
         function startCamera() {
-            const html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: {width: 250, height: 250} });
-            html5QrcodeScanner.render(onCameraReadsCode, function(error) { /* Ignore minor frame errors */ });
+            html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: {width: 250, height: 250} });
+            html5QrcodeScanner.render(onCameraReadsCode, function(err){});
         }
 
-        // -----------------------------------------------------
-        // FUNCTION 3: Handle the Scanned QR Code
-        // -----------------------------------------------------
         function onCameraReadsCode(decodedText) {
-            if (isProcessing) return; // Don't scan twice by accident
+            if (isProcessing) return;
             isProcessing = true;
-            
-            updateStatus("Verifying ticket...", "");
-            sendDataToBackend(decodedText);
+            currentTicketToken = decodedText;
+            showStatus("Verifying ticket signature...", "");
+            sendDataToBackend("lookup", currentTicketToken);
         }
 
-       // -----------------------------------------------------
-        // FUNCTION 4: Talk to ScriptRunner Connect (CORS Bypass Mode)
-        // -----------------------------------------------------
-        async function sendDataToBackend(qrCodeJwt) {
+        async function sendDataToBackend(actionType, ticketToken) {
             try {
-                // We package both tokens into a single text payload
-                const payload = {
-                    googleToken: googleToken,
-                    ticketToken: qrCodeJwt
-                };
-        
                 const response = await fetch(SCRIPTRUNNER_URL, {
                     method: 'POST',
-                    headers: {
-                        // Changing this to text/plain forces the browser to skip the OPTIONS check!
-                        'Content-Type': 'text/plain' 
-                    },
-                    body: JSON.stringify(payload)
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify({
+                        action: actionType, // "lookup" or "confirm"
+                        googleToken: googleToken,
+                        ticketToken: ticketToken
+                    })
                 });
-        
+
                 const data = await response.json();
-        
-                if (response.ok) {
-                    updateStatus("✅ Checked In: " + data.contactName, "success");
-                } else {
-                    updateStatus("❌ Error: " + data.error, "error");
+
+                if (!response.ok) {
+                    showStatus("❌ Error: " + data.error, "error");
+                    isProcessing = false;
+                    return;
+                }
+
+                if (actionType === "lookup") {
+                    hideStatus();
+                    // Pause the active camera scanning interface
+                    if(html5QrcodeScanner) html5QrcodeScanner.clear();
+                    
+                    // Populate fields
+                    document.getElementById('field-firstname').value = data.firstName || '';
+                    document.getElementById('field-lastname').value = data.lastName || '';
+                    document.getElementById('field-company').value = data.company || '';
+                    document.getElementById('field-am').value = data.accountManager || '';
+                    
+                    // Transition view layouts
+                    document.getElementById('scanner-section').style.display = 'none';
+                    document.getElementById('review-section').style.display = 'block';
+                } else if (actionType === "confirm") {
+                    showStatus("✅ Checked In Successfully!", "success");
+                    setTimeout(() => {
+                        resetToScanner();
+                    }, 2000);
                 }
             } catch (error) {
-                updateStatus("❌ Network Error: Could not reach server", "error");
-            }
-        
-            setTimeout(() => {
+                showStatus("❌ Network Error: Configuration mismatch or platform issue.", "error");
                 isProcessing = false;
-                updateStatus("Ready to scan...", "");
-            }, 3000);
-        }
-        // -----------------------------------------------------
-        // UTILITIES
-        // -----------------------------------------------------
-        function updateStatus(message, className) {
-            const statusDiv = document.getElementById('status-message');
-            statusDiv.innerText = message;
-            statusDiv.className = 'status-box ' + className;
+            }
         }
 
-        // Used for testing without a real camera/QR code
+        function commitAttendance() {
+            document.getElementById('confirm-btn').disabled = true;
+            showStatus("Syncing attendance with HubSpot...", "");
+            sendDataToBackend("confirm", currentTicketToken);
+        }
+
+        function resetToScanner() {
+            // Clear current working state values
+            currentTicketToken = "";
+            isProcessing = false;
+            document.getElementById('confirm-btn').disabled = false;
+            hideStatus();
+            
+            // Empty all form fields
+            document.getElementById('field-firstname').value = '';
+            document.getElementById('field-lastname').value = '';
+            document.getElementById('field-company').value = '';
+            document.getElementById('field-am').value = '';
+
+            // Transition visibility blocks back to scanner mode
+            document.getElementById('review-section').style.display = 'none';
+            document.getElementById('scanner-section').style.display = 'block';
+            startCamera();
+        }
+
+        function showStatus(msg, type) {
+            const box = document.getElementById('status-message');
+            box.innerText = msg;
+            box.className = "status-box " + type;
+        }
+        function hideStatus() { document.getElementById('status-message').style.display = 'none'; }
         function simulateScan() {
-            // Ask the user to paste a test JWT
             const testJwt = prompt("Paste your Test JWT here:");
-            if(testJwt) {
-                onCameraReadsCode(testJwt);
-            }
+            if(testJwt) onCameraReadsCode(testJwt);
         }
     </script>
 </body>
