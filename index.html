@@ -1,144 +1,191 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Adaptavist Group | Event Portal</title>
+    <title>Adaptavist Event Portal</title>
+    
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="https://unpkg.com/html5-qrcode"></script>
-    <style
-:root {
-    --brand-orange: #f97316;     /* Primary Adaptavist Orange */
-    --brand-orange-hover: #ea580c;
-    --bg-slate: #0f172a;         /* Deep Slate Gray */
-    --card-bg: #ffffff;
-    --input-border: #cbd5e1;
-    --text-main: #1e293b;
-    --brand-text: #ffffff;
-}
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+    <style>
+        /* ---------------------------------------------------------
+           BRAND IDENTITY COLORS (THE ADAPTAVIST SYSTEM)
+           --------------------------------------------------------- */
+        :root {
+            --adaptavist-orange: #f97316;
+            --adaptavist-orange-hover: #ea580c;
+            --deep-slate-bg: #0f172a;
+            --pure-white-card: #ffffff;
+            --form-text: #1e293b;
+            --border-gray: #cbd5e1;
+        }
 
-body { 
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-    background-color: var(--bg-slate); 
-    color: var(--text-main); 
-    line-height: 1.5; 
-    padding: 20px; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    min-height: 100vh; 
-}
+        /* ---------------------------------------------------------
+           RESPONSIVE BASE LAYOUT
+           --------------------------------------------------------- */
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+        }
 
-.app-card { 
-    width: 100%; 
-    max-width: 550px; 
-    background: var(--card-bg); 
-    border-radius: 12px; 
-    overflow: hidden; 
-    box-shadow: 0 20px 40px rgba(0,0,0,0.3); 
-}
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            background-color: var(--deep-slate-bg); 
+            color: var(--form-text); 
+            padding: 15px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            min-height: 100vh; 
+        }
 
-/* Explicitly targeting the header container */
-div.header { 
-    background-color: var(--brand-orange) !important; 
-    color: var(--brand-text) !important; 
-    padding: 32px 20px; 
-    text-align: center; 
-}
+        .app-container { 
+            width: 100%; 
+            max-width: 500px; 
+            background: var(--pure-white-card); 
+            border-radius: 16px; 
+            overflow: hidden; 
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); 
+        }
 
-.header h1 { 
-    font-size: 1.8rem; 
-    font-weight: 800; 
-    letter-spacing: -0.025em; 
-    color: #ffffff;
-}
+        /* ---------------------------------------------------------
+           DOMINANT ORANGE HEADER BLOCK
+           --------------------------------------------------------- */
+        .brand-header { 
+            background-color: var(--adaptavist-orange) !important; 
+            color: #ffffff !important; 
+            padding: 35px 20px; 
+            text-align: center;
+        }
 
-.header p { 
-    color: rgba(255, 255, 255, 0.9); 
-    font-size: 0.95rem; 
-    margin-top: 6px; 
-    font-weight: 500;
-}
+        .brand-header h1 { 
+            font-size: 1.75rem; 
+            font-weight: 800; 
+            letter-spacing: -0.03em;
+        }
 
-.content { padding: 24px; }
+        .brand-header p { 
+            color: rgba(255, 255, 255, 0.9); 
+            font-size: 0.95rem; 
+            margin-top: 6px; 
+            font-weight: 500;
+        }
 
-/* Style the internal html5-qrcode scanner buttons to look nice */
-#reader button, .btn { 
-    display: inline-flex; 
-    align-items: center; 
-    justify-content: center; 
-    width: 100%; 
-    padding: 14px; 
-    font-size: 1rem; 
-    font-weight: 700; 
-    border-radius: 8px; 
-    border: none; 
-    cursor: pointer; 
-    transition: all 0.2s ease; 
-    margin-top: 10px; 
-    background-color: var(--brand-orange);
-    color: white;
-}
+        .app-body { 
+            padding: 28px; 
+        }
 
-#reader button:hover, .btn:hover { 
-    background-color: var(--brand-orange-hover); 
-}
+        /* ---------------------------------------------------------
+           COMPONENTS & INTERFACE ELEMENTS
+           --------------------------------------------------------- */
+        .action-button { 
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+            width: 100%; 
+            padding: 14px; 
+            font-size: 1rem; 
+            font-weight: 700; 
+            border-radius: 8px; 
+            border: none; 
+            cursor: pointer; 
+            transition: background 0.15s ease; 
+            background-color: var(--adaptavist-orange);
+            color: #ffffff;
+            margin-top: 10px;
+        }
 
-#reader { 
-    border: 2px dashed #cbd5e1 !important; 
-    border-radius: 8px; 
-    padding: 20px !important;
-}
+        .action-button:hover { 
+            background-color: var(--adaptavist-orange-hover); 
+        }
 
-.form-group { margin-bottom: 16px; text-align: left; }
+        .action-button:disabled {
+            background-color: #94a3b8;
+            cursor: not-allowed;
+        }
 
-label { 
-    display: block; 
-    font-size: 0.875rem; 
-    font-weight: 700; 
-    color: #475569; 
-    margin-bottom: 6px; 
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
+        /* Style elements generated dynamically by the QR Library */
+        #reader { 
+            border: 2px dashed var(--border-gray) !important; 
+            border-radius: 8px; 
+            padding: 15px !important;
+        }
 
-input[type="text"] { 
-    width: 100%; 
-    padding: 12px; 
-    border: 1px solid var(--input-border); 
-    border-radius: 6px; 
-    font-size: 1rem; 
-    color: var(--text-main); 
-    background-color: #f8fafc; 
-}
+        #reader button {
+            background-color: var(--adaptavist-orange) !important;
+            color: white !important;
+            border: none !important;
+            padding: 10px 15px !important;
+            font-weight: 700 !important;
+            border-radius: 6px !important;
+            cursor: pointer;
+        }
 
-.status-box { 
-    margin-top: 16px; 
-    padding: 14px; 
-    font-weight: 700; 
-    border-radius: 6px; 
-    text-align: center; 
-    font-size: 0.95rem; 
-    display: none; 
-}
+        /* ---------------------------------------------------------
+           DATA REVIEW FORM LOOKS
+           --------------------------------------------------------- */
+        .field-group { 
+            margin-bottom: 16px; 
+            text-align: left; 
+        }
 
-.success { display: block; background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
-.error { display: block; background: #fef2f2; color: #991b1b; border: 1px solid #fca5a5; }
+        label { 
+            display: block; 
+            font-size: 0.8rem; 
+            font-weight: 700; 
+            color: #475569; 
+            margin-bottom: 6px; 
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        input[type="text"] { 
+            width: 100%; 
+            padding: 12px; 
+            border: 1px solid var(--border-gray); 
+            border-radius: 6px; 
+            font-size: 1rem; 
+            color: var(--form-text); 
+            background-color: #f8fafc; 
+        }
+
+        /* ---------------------------------------------------------
+           VISIBILITY CONTROLS & STATE ALERTS
+           --------------------------------------------------------- */
+        .hidden { 
+            display: none !important; 
+        }
+
+        .notification-tray { 
+            margin-top: 16px; 
+            padding: 14px; 
+            font-weight: 700; 
+            border-radius: 6px; 
+            text-align: center; 
+            font-size: 0.95rem; 
+        }
+        .info { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
+        .success { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+        .error { background: #fef2f2; color: #991b1b; border: 1px solid #fca5a5; }
     </style>
 </head>
 <body>
 
-    <div class="app-card">
-        <div class="header">
-            <h1>The Adaptavist Group</h1>
-            <p>Secure Event Access Management</p>
+    <div class="app-container">
+        <div class="brand-header">
+            <h1>Adaptavist</h1>
+            <p>Event Access Controller</p>
         </div>
 
-        <div class="content">
+        <div class="app-body">
+            
             <div id="login-section">
-                <div style="margin-bottom: 20px; text-align: center;">
+                <p style="text-align: center; margin-bottom: 20px; color: #64748b; font-weight: 500;">
+                    Authentication Required to Launch Scanner
+                </p>
+                <div style="display: flex; justify-content: center;">
                     <div id="g_id_onload"
                          data-client_id="391161511150-ejvh658fsqb4cato9a58iq1ad4l3olsh.apps.googleusercontent.com"
                          data-context="signin"
@@ -150,36 +197,40 @@ input[type="text"] {
                 </div>
             </div>
 
-            <div id="scanner-section">
+            <div id="scanner-section" class="hidden">
                 <div id="reader"></div>
-                <button class="btn btn-primary" onclick="simulateScan()" style="margin-top:20px; font-size:0.85rem; padding:8px;">[Test Mode] Simulate Valid Scan</button>
+                <button class="action-button" onclick="simulateScan()" style="font-size: 0.8rem; padding: 8px; margin-top: 15px; background-color: #475569;">
+                    [Test Mode] Inject Mock JWT
+                </button>
             </div>
 
-            <div id="review-section">
-                <div class="form-group">
+            <div id="review-section" class="hidden">
+                <div class="field-group">
                     <label>First Name</label>
                     <input type="text" id="field-firstname" readonly>
                 </div>
-                <div class="form-group">
+                <div class="field-group">
                     <label>Second Name</label>
                     <input type="text" id="field-lastname" readonly>
                 </div>
-                <div class="form-group">
+                <div class="field-group">
                     <label>Company</label>
                     <input type="text" id="field-company" readonly>
                 </div>
-                <div class="form-group">
+                <div class="field-group">
                     <label>Account Manager</label>
                     <input type="text" id="field-am" readonly>
                 </div>
-                <button class="btn btn-accent" id="confirm-btn" onclick="commitAttendance()">Confirm Attendance</button>
+                <button class="action-button" id="confirm-btn" onclick="commitAttendance()">Confirm Attendance</button>
             </div>
 
-            <div id="status-message" class="status-box"></div>
+            <div id="status-message" class="notification-tray hidden"></div>
+
         </div>
     </div>
 
     <script>
+        // CONFIGURATION ROUTE PIN
         const SCRIPTRUNNER_URL = "https://event.scriptrunnerconnect.com/htdmrgfevkndryj2hcs765";
         
         let googleToken = "";
@@ -187,33 +238,52 @@ input[type="text"] {
         let isProcessing = false;
         let html5QrcodeScanner = null;
 
+        // -----------------------------------------------------
+        // STEP 1: Handle Google Authentication Success Execution
+        // -----------------------------------------------------
         function handleGoogleLogin(response) {
             googleToken = response.credential;
-            document.getElementById('login-section').style.display = 'none';
-            document.getElementById('scanner-section').style.display = 'block';
+            
+            // Toggle Display Blocks State Cleanly
+            document.getElementById('login-section').classList.add('hidden');
+            document.getElementById('scanner-section').classList.remove('hidden');
+            
             startCamera();
         }
 
+        // -----------------------------------------------------
+        // STEP 2: Instantiating the Optical Engine
+        // -----------------------------------------------------
         function startCamera() {
-            html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: {width: 250, height: 250} });
+            html5QrcodeScanner = new Html5QrcodeScanner("reader", { 
+                fps: 10, 
+                qrbox: { width: 250, height: 250 } 
+            });
             html5QrcodeScanner.render(onCameraReadsCode, function(err){});
         }
 
+        // -----------------------------------------------------
+        // STEP 3: Route Scanned Code Inputs
+        // -----------------------------------------------------
         function onCameraReadsCode(decodedText) {
             if (isProcessing) return;
             isProcessing = true;
+            
             currentTicketToken = decodedText;
-            showStatus("Verifying ticket signature...", "");
+            showStatus("Verifying ticket signature with middleware...", "info");
             sendDataToBackend("lookup", currentTicketToken);
         }
 
+        // -----------------------------------------------------
+        // STEP 4: Network Stream Execution (CORS Bypass Mode)
+        // -----------------------------------------------------
         async function sendDataToBackend(actionType, ticketToken) {
             try {
                 const response = await fetch(SCRIPTRUNNER_URL, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'text/plain' },
+                    headers: { 'Content-Type': 'text/plain' }, // Standard text simple stream bypasses CORS OPTIONS
                     body: JSON.stringify({
-                        action: actionType, // "lookup" or "confirm"
+                        action: actionType,
                         googleToken: googleToken,
                         ticketToken: ticketToken
                     })
@@ -222,68 +292,80 @@ input[type="text"] {
                 const data = await response.json();
 
                 if (!response.ok) {
-                    showStatus("❌ Error: " + data.error, "error");
+                    showStatus("❌ Authorization Failure: " + data.error, "error");
                     isProcessing = false;
                     return;
                 }
 
                 if (actionType === "lookup") {
                     hideStatus();
-                    // Pause the active camera scanning interface
-                    if(html5QrcodeScanner) html5QrcodeScanner.clear();
+                    if (html5QrcodeScanner) html5QrcodeScanner.clear();
                     
-                    // Populate fields
+                    // Assign properties directly down into text inputs
                     document.getElementById('field-firstname').value = data.firstName || '';
                     document.getElementById('field-lastname').value = data.lastName || '';
                     document.getElementById('field-company').value = data.company || '';
                     document.getElementById('field-am').value = data.accountManager || '';
                     
-                    // Transition view layouts
-                    document.getElementById('scanner-section').style.display = 'none';
-                    document.getElementById('review-section').style.display = 'block';
+                    // Toggle visibility sets
+                    document.getElementById('scanner-section').classList.add('hidden');
+                    document.getElementById('review-section').classList.remove('hidden');
+                    
                 } else if (actionType === "confirm") {
-                    showStatus("✅ Checked In Successfully!", "success");
+                    showStatus("✅ Verification Passed. HubSpot Updated!", "success");
                     setTimeout(() => {
                         resetToScanner();
                     }, 2000);
                 }
             } catch (error) {
-                showStatus("❌ Network Error: Configuration mismatch or platform issue.", "error");
+                showStatus("❌ Core Link Failure: ScriptRunner server unreachable.", "error");
                 isProcessing = false;
             }
         }
 
+        // -----------------------------------------------------
+        // STEP 5: Dispatch Confirmation Updates to HubSpot
+        // -----------------------------------------------------
         function commitAttendance() {
             document.getElementById('confirm-btn').disabled = true;
-            showStatus("Syncing attendance with HubSpot...", "");
+            showStatus("Writing attendance validation state to HubSpot...", "info");
             sendDataToBackend("confirm", currentTicketToken);
         }
 
+        // -----------------------------------------------------
+        // STEP 6: Refresh System State Configuration
+        // -----------------------------------------------------
         function resetToScanner() {
-            // Clear current working state values
             currentTicketToken = "";
             isProcessing = false;
             document.getElementById('confirm-btn').disabled = false;
             hideStatus();
             
-            // Empty all form fields
+            // Empty all text elements out fully
             document.getElementById('field-firstname').value = '';
             document.getElementById('field-lastname').value = '';
             document.getElementById('field-company').value = '';
             document.getElementById('field-am').value = '';
 
-            // Transition visibility blocks back to scanner mode
-            document.getElementById('review-section').style.display = 'none';
-            document.getElementById('scanner-section').style.display = 'block';
+            // Transition UI displays back to start point
+            document.getElementById('review-section').classList.add('hidden');
+            document.getElementById('scanner-section').classList.remove('hidden');
             startCamera();
         }
 
-        function showStatus(msg, type) {
+        // -----------------------------------------------------
+        // VISIBILITY TRACKING UTILITY OPERATIONS
+        // -----------------------------------------------------
+        function showStatus(msg, statusClass) {
             const box = document.getElementById('status-message');
             box.innerText = msg;
-            box.className = "status-box " + type;
+            box.className = "notification-tray " + statusClass;
         }
-        function hideStatus() { document.getElementById('status-message').style.display = 'none'; }
+
+        function hideStatus() { 
+            document.getElementById('status-message').classList.add('hidden'); 
+        }
+
         function simulateScan() {
             const testJwt = prompt("Paste your Test JWT here:");
             if(testJwt) onCameraReadsCode(testJwt);
