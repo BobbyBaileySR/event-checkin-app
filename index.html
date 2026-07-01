@@ -23,18 +23,21 @@ CSS
     --text-main: #1e293b;
     --brand-text: #ffffff;
 }
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
+
 body { 
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-    background-color: var(--bg-slate); /* Dark mode background pops the orange card */
+    background-color: var(--bg-slate); 
     color: var(--text-main); 
     line-height: 1.5; 
-    padding: 10px; 
+    padding: 20px; 
     display: flex; 
     align-items: center; 
     justify-content: center; 
     min-height: 100vh; 
 }
+
 .app-card { 
     width: 100%; 
     max-width: 550px; 
@@ -42,27 +45,34 @@ body {
     border-radius: 12px; 
     overflow: hidden; 
     box-shadow: 0 20px 40px rgba(0,0,0,0.3); 
-    border: 1px solid rgba(255,255,255,0.1); 
 }
-.header { 
-    background: var(--brand-orange); /* Orange is now the main header color */
-    color: var(--brand-text); 
-    padding: 28px 20px; 
+
+/* Explicitly targeting the header container */
+div.header { 
+    background-color: var(--brand-orange) !important; 
+    color: var(--brand-text) !important; 
+    padding: 32px 20px; 
     text-align: center; 
 }
+
 .header h1 { 
-    font-size: 1.6rem; 
+    font-size: 1.8rem; 
     font-weight: 800; 
     letter-spacing: -0.025em; 
+    color: #ffffff;
 }
+
 .header p { 
-    color: rgba(255, 255, 255, 0.8); 
-    font-size: 0.9rem; 
-    margin-top: 4px; 
+    color: rgba(255, 255, 255, 0.9); 
+    font-size: 0.95rem; 
+    margin-top: 6px; 
     font-weight: 500;
 }
+
 .content { padding: 24px; }
-.btn { 
+
+/* Style the internal html5-qrcode scanner buttons to look nice */
+#reader button, .btn { 
     display: inline-flex; 
     align-items: center; 
     justify-content: center; 
@@ -75,31 +85,22 @@ body {
     cursor: pointer; 
     transition: all 0.2s ease; 
     margin-top: 10px; 
+    background-color: var(--brand-orange);
+    color: white;
 }
-.btn-primary { 
-    background: var(--brand-orange); 
-    color: white; 
+
+#reader button:hover, .btn:hover { 
+    background-color: var(--brand-orange-hover); 
 }
-.btn-primary:hover { 
-    background: var(--brand-orange-hover); 
-}
-.btn-accent { 
-    background: var(--brand-orange); 
-    color: white; 
-    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.2);
-}
-.btn-accent:hover { 
-    background: var(--brand-orange-hover); 
-    box-shadow: 0 6px 16px rgba(249, 115, 22, 0.3);
-}
-#scanner-section, #review-section { display: none; }
+
 #reader { 
-    width: 100%; 
-    border: 2px solid #e2e8f0; 
+    border: 2px dashed #cbd5e1 !important; 
     border-radius: 8px; 
-    overflow: hidden; 
+    padding: 20px !important;
 }
+
 .form-group { margin-bottom: 16px; text-align: left; }
+
 label { 
     display: block; 
     font-size: 0.875rem; 
@@ -109,6 +110,7 @@ label {
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
+
 input[type="text"] { 
     width: 100%; 
     padding: 12px; 
@@ -117,14 +119,8 @@ input[type="text"] {
     font-size: 1rem; 
     color: var(--text-main); 
     background-color: #f8fafc; 
-    transition: all 0.2s; 
 }
-input[type="text"]:focus { 
-    outline: none; 
-    border-color: var(--brand-orange); 
-    background-color: #fff; 
-    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
-}
+
 .status-box { 
     margin-top: 16px; 
     padding: 14px; 
@@ -134,18 +130,9 @@ input[type="text"]:focus {
     font-size: 0.95rem; 
     display: none; 
 }
-.success { 
-    display: block; 
-    background: #f0fdf4; 
-    color: #166534; 
-    border: 1px solid #bbf7d0; 
-}
-.error { 
-    display: block; 
-    background: #fef2f2; 
-    color: #991b1b; 
-    border: 1px solid #fca5a5; 
-}
+
+.success { display: block; background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+.error { display: block; background: #fef2f2; color: #991b1b; border: 1px solid #fca5a5; }
     </style>
 </head>
 <body>
